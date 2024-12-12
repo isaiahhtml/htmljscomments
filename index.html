@@ -6,6 +6,10 @@
     initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <title>HTML + JS Commenting System</title>
   <style>
+    form {
+      outline: 1px solid red;
+    }
+
     form.form-example {
       display: table;
     }
@@ -32,7 +36,7 @@
   </style>
 </head>
 <body>
-  <form action="" method="get" class="form-example">
+  <form action="http://localhost:3333/comment" method="post" class="form-example">
     <div class="form-example">
       <label for="name">Enter your name: </label>
       <input type="text" name="name" id="name" required />
@@ -46,7 +50,6 @@
       <textarea name="comment" id="comment" rows="5" cols="33" required>
       </textarea>
     </div>
-    <hr>
     <div class="form-example">
       <input type="submit" value="Submit">
     </div>
