@@ -23,6 +23,12 @@
     label {
       padding-right: 10px;
     }
+
+    textarea {
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-shadow: 1px 1px 1px #999;
+    }
   </style>
 </head>
 <body>
@@ -36,7 +42,13 @@
       <input type="text" name="email" id="email" required />
     </div>
     <div class="form-example">
-      <input type="submit" value="Subscribe!">
+      <label for="comment">Enter your comment: </label>
+      <textarea name="comment" id="comment" rows="5" cols="33" required>
+      </textarea>
+    </div>
+    <hr>
+    <div class="form-example">
+      <input type="submit" value="Submit">
     </div>
   </form>
 </body>
