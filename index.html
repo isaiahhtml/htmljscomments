@@ -57,5 +57,30 @@
       <input type="submit" value="Submit">
     </div>
   </form>
+  <div id="comments">Loading comments...</div>
+  <script>
+    async function fetchComments() {
+      try {
+        const response = await fetch('http://localhost:3333/comments');
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const comments = await response.json();
+
+        console.log(comments);
+
+        const commentsContainer = document.getElementById('comments');
+        commentsContainer.innerHTML = comments
+          .map(comment => `<p><strong>${comment.username}:</strong> ${comment.content}</p>`)
+          .join('');
+      } catch (error) {
+        console.error('Error fetching comments:', error);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchComments);
+  </script>
 </body>
 </html>
