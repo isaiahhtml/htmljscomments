@@ -73,7 +73,7 @@
 
         const commentsContainer = document.getElementById('comments');
         commentsContainer.innerHTML = comments
-          .map(comment => `<p><strong>${comment.username}:</strong> ${comment.content}</p>`)
+          .map(comment => `<p><strong>${comment.name}:</strong> ${comment.comment}</p>`)
           .join('');
       } catch (error) {
         console.error('Error fetching comments:', error);

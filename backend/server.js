@@ -1,17 +1,18 @@
 import express from "express";
+import cors from 'cors';
 import fs from "node:fs";
 import path from "node:path";
 
 const app = express();
 const PORT = 3333;
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const commentsFilePath = path.join(import.meta.dirname, 'comments.txt');
 
 app.post('/comment', (req, res) => {
-  console.log(req.body);
   const { name, email, comment } = req.body;
 
   if (!name || !email || !comment) {
@@ -29,6 +30,21 @@ app.post('/comment', (req, res) => {
     res.status(200).json({ message: 'Comment saved successfully!' });
   });
 });
+
+app.get('/comments', (req, res) => {
+  let comments;
+  try {
+    const fileContent = fs.readFileSync(commentsFilePath, "utf8");
+
+    comments = fileContent
+      .split("\n")
+      .filter(line => line.trim() !== "")
+      .map(line => JSON.parse(line));
+  } catch (error) {
+    console.error("Error reading or parsing comments.txt:", error);
+  }
+  res.json(comments);
+})
 
 
 app.listen(PORT, () => {
