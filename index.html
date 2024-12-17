@@ -50,8 +50,7 @@
     </div>
     <div class="form-example">
       <label for="comment">Enter your comment: </label>
-      <textarea name="comment" id="comment" rows="5" cols="33" required>
-      </textarea>
+      <textarea name="comment" id="comment" rows="5" cols="33" required></textarea>
     </div>
     <div class="form-example">
       <input type="submit" value="Submit">
@@ -73,7 +72,8 @@
 
         const commentsContainer = document.getElementById('comments');
         commentsContainer.innerHTML = comments
-          .map(comment => `<p><strong>${comment.name}:</strong> ${comment.comment}</p>`)
+          .map(comment =>
+            `<p><strong>${comment.name} (${comment.email}):</strong> ${comment.comment}</p>`)
           .join('');
       } catch (error) {
         console.error('Error fetching comments:', error);
