@@ -27,7 +27,7 @@ app.post('/comment', (req, res) => {
       return res.status(500).json({ message: 'Failed to save the comment.' });
     }
 
-    res.status(200).json({ message: 'Comment saved successfully!' });
+    res.redirect('http://localhost:8080')
   });
 });
 

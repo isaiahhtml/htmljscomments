@@ -21,6 +21,12 @@
       display: table-row;
     }
 
+    .comment {
+      border: 2px solid gray;
+      width: max-content;
+      padding: 10px;
+    }
+
     label,
     input {
       display: table-cell;
@@ -68,12 +74,13 @@
 
         const comments = await response.json();
 
-        console.log(comments);
-
         const commentsContainer = document.getElementById('comments');
         commentsContainer.innerHTML = comments
           .map(comment =>
-            `<p><strong>${comment.name} (${comment.email}):</strong> ${comment.comment}</p>`)
+            `<div class="comment">
+               <p><strong>${comment.name} (${comment.email}):</strong> ${comment.comment}</p>
+             </div>
+            `)
           .join('');
       } catch (error) {
         console.error('Error fetching comments:', error);
