@@ -10,6 +10,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
+
 const commentsFilePath = path.join(import.meta.dirname, 'comments.txt');
 
 app.post('/comment', (req, res) => {
