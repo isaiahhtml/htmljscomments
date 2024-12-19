@@ -87,7 +87,7 @@
           const commentContent = `
             <p>
               <strong>${escapeHTML(comment.name)} (${escapeHTML(comment.email)}):</strong>
-              ${escapeHTML(comment.comment)} ${comment.timestamp}
+              ${escapeHTML(comment.comment)} ${formatTimestamp(comment.timestamp)}
             </p>
           `;
 
@@ -97,6 +97,19 @@
 
         commentsContainer.innerHTML = '';
         commentsContainer.appendChild(fragment);
+
+        function formatTimestamp(timestamp) {
+          const date = new Date(timestamp);
+
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const day = String(date.getDate()).padStart(2, '0');
+          const hours = String(date.getHours()).padStart(2, '0');
+          const minutes = String(date.getMinutes()).padStart(2, '0');
+          const seconds = String(date.getSeconds()).padStart(2, '0');
+
+          return `${month}-${day}-${year} ${hours}:${minutes}:${seconds}`;
+        }
 
         function escapeHTML(str) {
           return str.replace(/[&<>"']/g, (char) => ({
