@@ -87,6 +87,7 @@
             <p>
               <strong>${escapeHTML(comment.name)} (${escapeHTML(comment.email)}):</strong>
               ${escapeHTML(comment.comment)} ${formatTimestamp(comment.timestamp)}
+              <button class="retractBtn" type="button">Retract</button>
             </p>
           `;
 
@@ -99,6 +100,8 @@
 
         function formatTimestamp(timestamp) {
           const date = new Date(timestamp);
+
+          console.log(typeof date.getFullYear());
 
           const year = date.getFullYear();
           const month = String(date.getMonth() + 1).padStart(2, '0');
