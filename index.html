@@ -73,13 +73,12 @@
 
         const comments = await response.json();
 
-        const sortedData = comments.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
         const commentsContainer = document.getElementById('comments');
         
         const fragment = document.createDocumentFragment();
 
-        sortedData.forEach(comment => {
+        comments.forEach(comment => {
           const commentDiv = document.createElement('div');
           commentDiv.className = 'comment';
 
