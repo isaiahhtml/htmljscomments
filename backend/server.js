@@ -1,7 +1,8 @@
 import express from "express";
-import cors from 'cors';
-import fs from "node:fs";
+import cors from "cors";
+import fs from "node:fs"; // TODO: remove both this and node:path when db is configured
 import path from "node:path";
+import Database from "better-sqlite3";
 
 const app = express();
 const PORT = 3333;
@@ -10,6 +11,18 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const db = new Database('comments.db', { verbose: console.log });
+
+db.exec(`
+  CREATE TABLE IF NOT EXISTS comments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    comment TEXT NOT NULL,
+    timestamp_utc DATETIME DEFAULT CURRENT_TIMESTAMP,
+    status TEXT CHECK (status IN ('default', 'moderated', 'retracted')) DEFAULT 'default'
+  )
+`);
 
 
 const commentsFilePath = path.join(import.meta.dirname, 'comments.txt');
@@ -21,32 +34,29 @@ app.post('/comment', (req, res) => {
     return res.status(400).json({ message: 'All fields are required: name, email, and comment.' });
   }
 
-  const commentData = JSON.stringify({ name, email, comment, timestamp: new Date().toISOString() }) + '\n';
-
-  fs.appendFile(commentsFilePath, commentData, (err) => {
-    if (err) {
-      console.error('Error writing to file:', err);
-      return res.status(500).json({ message: 'Failed to save the comment.' });
-    }
-
-    res.redirect('http://localhost:8080')
-  });
+  try {
+    const stmt = db.prepare(`
+      INSERT INTO comments (name, email, comment, timestamp_utc)
+      VALUES (?, ?, ?, ?)
+    `);
+    stmt.run(name, email, comment, new Date().toISOString());
+  } catch (error) {
+    console.error('Database error:', error);
+  }
+  res.redirect('http://localhost:8080');
 });
 
 app.get('/comments', (req, res) => {
-  let comments;
   try {
-    const fileContent = fs.readFileSync(commentsFilePath, "utf8");
+    const stmt = db.prepare('SELECT * FROM comments');
+    const comments = stmt.all();
 
-    comments = fileContent
-      .split("\n")
-      .filter(line => line.trim() !== "")
-      .map(line => JSON.parse(line));
+    res.status(200).json(comments);
   } catch (error) {
-    console.error("Error reading or parsing comments.txt:", error);
+    console.error('Database error:', error);
+    res.status(500).json({ message: 'Failed to fetch comments.'});
   }
-  res.json(comments);
-})
+});
 
 
 app.listen(PORT, () => {
