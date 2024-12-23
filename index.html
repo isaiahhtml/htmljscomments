@@ -5,43 +5,7 @@
   <meta name="viewport" content="width=device-width, user-scalable=no, 
     initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <title>HTML + JS Commenting System</title>
-  <style>
-    body {
-      font-family:  Arial, "Helvetica Neue", Helvetica, sans-serif;
-    }
-
-    form.form-example {
-      display: table;
-    }
-
-    div.form-example {
-      display: table-row;
-    }
-
-    .comment {
-      border: 2px solid gray;
-      border-radius: 5px;
-      width: max-content;
-      padding: 10px;
-      margin: 5px;
-    }
-
-    label,
-    input {
-      display: table-cell;
-      margin-bottom: 10px;
-    }
-
-    label {
-      padding-right: 10px;
-    }
-
-    textarea {
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      box-shadow: 1px 1px 1px #999;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" media="all">
 </head>
 <body>
   <form action="http://localhost:3333/comment" method="post" class="form-example">
@@ -85,7 +49,7 @@
           const commentContent = `
             <p>
               <strong>${escapeHTML(comment.name)} (${escapeHTML(comment.email)}):</strong>
-              ${escapeHTML(comment.comment)} [${formatTimestamp(comment.timestamp_utc)}]
+              ${escapeHTML(comment.comment)} <span class="time">${formatTimestamp(comment.timestamp_utc)}</span>
               <button class="retractBtn" type="button">Retract</button>
             </p>
           `;
