@@ -1,7 +1,5 @@
 import express from "express";
 import cors from "cors";
-import fs from "node:fs"; // TODO: remove both this and node:path when db is configured
-import path from "node:path";
 import Database from "better-sqlite3";
 
 const app = express();
@@ -23,9 +21,6 @@ db.exec(`
     status TEXT CHECK (status IN ('default', 'moderated', 'retracted')) DEFAULT 'default'
   )
 `);
-
-
-const commentsFilePath = path.join(import.meta.dirname, 'comments.txt');
 
 app.post('/comment', (req, res) => {
   const { name, email, comment } = req.body;
