@@ -69,7 +69,7 @@
           <p>
           <strong>${escapeHTML(comment.name)} (${escapeHTML(comment.email)}):</strong>
           ${escapeHTML(comment.comment)} <span class="time">${formatTimestamp(comment.timestamp_utc)}</span>
-          <button class="retractBtn" type="button">Retract</button>
+          <button class="retractBtn" type="button" onclick="retractComment(this)">Retract</button>
           </p>
           `;
 
@@ -111,7 +111,17 @@
           };
 
           return new Intl.DateTimeFormat('en-US', options).format(date);
+    }
+
+    function retractComment(button) {
+      const commentDiv = button.closest('.comment');
+      if (commentDiv) {
+        const paragraph = commentDiv.querySelector('p');
+        if (paragraph) {
+          paragraph.textContent = "Retracted";
         }
+      }
+    }
 
     document.getElementById("toggle-sort").addEventListener("click", toggleSort);
     document.addEventListener('DOMContentLoaded', fetchComments);
