@@ -13,7 +13,6 @@ async function fetchComments() {
     }
 
     comments = await response.json();
-    console.log(comments);
 
     if (isSortedByNewest === true) {
       comments.sort((a, b) => {
@@ -38,10 +37,14 @@ function renderComments() {
     const commentDiv = document.createElement('div');
     commentDiv.className = 'comment';
 
+    const commentContentValue = comment.status === 'retracted'
+      ? 'Retracted'
+      : escapeHTML(comment.comment);
+
     const commentContent = `
       <p>
       <strong>${escapeHTML(comment.name)} (${escapeHTML(comment.email)}):</strong>
-      <span class="content">${escapeHTML(comment.comment)}</span> <span class="time">${formatTimestamp(comment.timestamp_utc)}</span>
+      <span class="content">${commentContentValue}</span> <span class="time">${formatTimestamp(comment.timestamp_utc)}</span>
       <button class="retractBtn" type="button">Retract</button>
       </p>
       `;
