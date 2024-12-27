@@ -2,6 +2,7 @@ let isSortedByNewest = false;
 let comments;
 
 const commentsServer = 'http://localhost:3333/comments'
+const commentServer = 'http://localhost:3333/comment'
 
 async function fetchComments() {
   try {
@@ -12,6 +13,7 @@ async function fetchComments() {
     }
 
     comments = await response.json();
+    console.log(comments);
 
     if (isSortedByNewest === true) {
       comments.sort((a, b) => {
@@ -40,7 +42,7 @@ function renderComments() {
       <p>
       <strong>${escapeHTML(comment.name)} (${escapeHTML(comment.email)}):</strong>
       <span class="content">${escapeHTML(comment.comment)}</span> <span class="time">${formatTimestamp(comment.timestamp_utc)}</span>
-      <button class="retractBtn" type="button" onclick="retractComment(this)">Retract</button>
+      <button class="retractBtn" type="button">Retract</button>
       </p>
       `;
 
@@ -84,13 +86,24 @@ function formatTimestamp(timestamp) {
   return new Intl.DateTimeFormat('en-US', options).format(date);
 }
 
-function retractComment(button) {
-  const commentDiv = button.closest('.comment');
-  if (commentDiv) {
-    const paragraph = commentDiv.querySelector('.content');
-    if (paragraph) {
-      paragraph.textContent = "Retracted";
+async function retract(id) {
+  try {
+    const response = await fetch(`http://localhost:3333/comment/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status: "retracted" }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to update record: ${response.statusText}`);
     }
+
+    const result = await response.json();
+    console.log("Record updated successfully:", result);
+  } catch (error) {
+    console.error("Error updating record:", error);
   }
 }
 
