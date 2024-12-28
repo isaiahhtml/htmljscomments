@@ -42,10 +42,10 @@ function renderComments() {
       : escapeHTML(comment.comment);
 
     const commentContent = `
-      <p>
+      <p data-id="${comment.id}">
       <strong>${escapeHTML(comment.name)} (${escapeHTML(comment.email)}):</strong>
       <span class="content">${commentContentValue}</span> <span class="time">${formatTimestamp(comment.timestamp_utc)}</span>
-      <button class="retractBtn" type="button">Retract</button>
+      <button class="retractBtn" type="button" data-id="${comment.id}" onclick="sendId(this)">Retract</button>
       </p>
       `;
 
@@ -87,6 +87,11 @@ function formatTimestamp(timestamp) {
   };
 
   return new Intl.DateTimeFormat('en-US', options).format(date);
+}
+
+function sendId(element) {
+  const id = element.getAttribute("data-id");
+  retract(id);
 }
 
 async function retract(id) {
