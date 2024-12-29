@@ -9,7 +9,7 @@ const corsOptions = {
   optionsSuccessStatus: 200
 }
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -56,6 +56,19 @@ app.get('/comments', (req, res) => {
     res.status(500).json({ message: 'Failed to fetch comments.'});
   }
 });
+
+app.get('/comment/:id', (req, res) => {
+  const { id } = req.params;
+  try {
+    const stmt = db.prepare("SELECT * FROM comments WHERE id = ?");
+    const result = stmt.get(id);
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ message: 'Failed to fetch comment.'});
+  }
+})
 
 app.patch('/comment/:id', async (req, res) => {
   const { id } = req.params;

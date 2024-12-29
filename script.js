@@ -97,18 +97,34 @@ function sendId(element) {
 async function retract(id) {
   try {
     const response = await fetch(`http://localhost:3333/comment/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch record: ${response.statusText}`);
+    }
+
+    const record = await response.json();
+    console.log(record);
+
+    const updateStatus = record.status === "retracted" ? "default" : "retracted";
+
+    const updateResponse = await fetch(`http://localhost:3333/comment/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ status: "retracted" }),
+      body: JSON.stringify({ status: updateStatus })
     });
 
-    if (!response.ok) {
-      throw new Error(`Failed to update record: ${response.statusText}`);
+    if (!updateResponse.ok) {
+      throw new Error(`Failed to update record: ${updateResponse.statusText}`)
     }
 
-    const result = await response.json();
+    const result = await updateResponse.json();
     console.log("Record updated successfully:", result);
   } catch (error) {
     console.error("Error updating record:", error);
