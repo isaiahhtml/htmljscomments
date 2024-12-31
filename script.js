@@ -1,12 +1,12 @@
 let isSortedByNewest = false;
 let comments;
 
-const commentsServer = 'http://localhost:3333/comments'
+const API_URL = 'http://localhost:3333'
 const commentServer = 'http://localhost:3333/comment'
 
 async function fetchComments() {
   try {
-    const response = await fetch(commentsServer);
+    const response = await fetch(`${API_URL}/comments`);
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -96,7 +96,7 @@ function sendId(element) {
 
 async function retract(id) {
   try {
-    const response = await fetch(`http://localhost:3333/comment/${id}`, {
+    const response = await fetch(`${API_URL}/comments/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -112,7 +112,7 @@ async function retract(id) {
 
     const updateStatus = record.status === "retracted" ? "default" : "retracted";
 
-    const updateResponse = await fetch(`http://localhost:3333/comment/${id}`, {
+    const updateResponse = await fetch(`${API_URL}/comments/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

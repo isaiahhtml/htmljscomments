@@ -57,7 +57,7 @@ app.get('/comments', (req, res) => {
   }
 });
 
-app.get('/comment/:id', (req, res) => {
+app.get('/comments/:id', (req, res) => {
   const { id } = req.params;
   try {
     const stmt = db.prepare("SELECT * FROM comments WHERE id = ?");
@@ -70,7 +70,7 @@ app.get('/comment/:id', (req, res) => {
   }
 })
 
-app.patch('/comment/:id', async (req, res) => {
+app.patch('/comments/:id', async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
 
