@@ -61,10 +61,9 @@ function renderComments() {
   commentsContainer.appendChild(fragment);
 }
 
-function toggleSort(comments) {
+function toggleSort(element) {
   isSortedByNewest = !isSortedByNewest;
-  const test = document.querySelector('#toggle-sort');
-  test.innerHTML = test.innerHTML === "Sort By Oldest" ? "Sort By Newest": "Sort By Oldest";
+  element.innerHTML = element.innerHTML === "Sort By Oldest" ? "Sort By Newest": "Sort By Oldest";
   fetchComments();
 }
 
@@ -132,5 +131,4 @@ async function retract(id) {
   }
 }
 
-document.getElementById("toggle-sort").addEventListener("click", toggleSort);
 document.addEventListener('DOMContentLoaded', fetchComments);
