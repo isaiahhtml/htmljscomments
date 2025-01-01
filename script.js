@@ -4,6 +4,10 @@ let comments;
 const API_URL = 'http://localhost:3333'
 const commentServer = 'http://localhost:3333/comment'
 
+if (!API_URL) {
+  throw new Error('Invalid API_URL or id');
+}
+
 async function fetchComments() {
   try {
     const response = await fetch(`${API_URL}/comments`);
@@ -59,6 +63,8 @@ function renderComments() {
 
 function toggleSort(comments) {
   isSortedByNewest = !isSortedByNewest;
+  const test = document.querySelector('#toggle-sort');
+  test.innerHTML = test.innerHTML === "Sort By Oldest" ? "Sort By Newest": "Sort By Oldest";
   fetchComments();
 }
 
@@ -96,12 +102,7 @@ function sendId(element) {
 
 async function retract(id) {
   try {
-    const response = await fetch(`${API_URL}/comments/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      }
-    });
+    const response = await fetch(`${API_URL}/comments/${id}`);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch record: ${response.statusText}`);

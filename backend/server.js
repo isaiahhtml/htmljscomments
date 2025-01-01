@@ -4,6 +4,7 @@ import Database from "better-sqlite3";
 
 const app = express();
 const PORT = 3333;
+const CLIENT_URL = 'http://localhost:8080';
 const corsOptions = {
   origin: 'http://127.0.0.1:8080',
   optionsSuccessStatus: 200
@@ -25,25 +26,6 @@ db.exec(`
     status TEXT CHECK (status IN ('default', 'moderated', 'retracted')) DEFAULT 'default'
   )
 `);
-
-app.post('/comment', (req, res) => {
-  const { name, email, comment } = req.body;
-
-  if (!name || !email || !comment) {
-    return res.status(400).json({ message: 'All fields are required: name, email, and comment.' });
-  }
-
-  try {
-    const stmt = db.prepare(`
-      INSERT INTO comments (name, email, comment, timestamp_utc)
-      VALUES (?, ?, ?, ?)
-    `);
-    stmt.run(name, email, comment, new Date().toISOString());
-  } catch (error) {
-    console.error('Database error:', error);
-  }
-  res.redirect('http://localhost:8080');
-});
 
 app.get('/comments', (req, res) => {
   try {
@@ -69,6 +51,25 @@ app.get('/comments/:id', (req, res) => {
     res.status(500).json({ message: 'Failed to fetch comment.'});
   }
 })
+
+app.post('/comments', (req, res) => {
+  const { name, email, comment } = req.body;
+
+  if (!name || !email || !comment) {
+    return res.status(400).json({ message: 'All fields are required: name, email, and comment.' });
+  }
+
+  try {
+    const stmt = db.prepare(`
+      INSERT INTO comments (name, email, comment, timestamp_utc)
+      VALUES (?, ?, ?, ?)
+    `);
+    stmt.run(name, email, comment, new Date().toISOString());
+  } catch (error) {
+    console.error('Database error:', error);
+  }
+  res.redirect(`${CLIENT_URL}`);
+});
 
 app.patch('/comments/:id', async (req, res) => {
   const { id } = req.params;
