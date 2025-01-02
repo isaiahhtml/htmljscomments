@@ -25,6 +25,24 @@
       <input type="submit" value="Submit">
     </div>
   </form>
+
+  <div class="login-container">
+    <h2>Login</h2>
+    <form action="/login" method="POST" id="login-form">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required placeholder="Enter your email">
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required placeholder="Enter your password">
+      </div>
+      <div class="form-group">
+        <button type="submit">Login</button>
+      </div>
+    </form>
+  </div>
+  <hr>
   <button id="toggle-sort" onclick="toggleSort(this)">Sort by Newest</button>
   <div id="comments">Loading comments...</div>
   <script src="script.js"></script>

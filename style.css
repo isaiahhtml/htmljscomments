@@ -35,7 +35,7 @@ textarea {
 }
 
 .time {
-  color: goldenrod;
-  border: 2px dotted goldenrod;
+  color: red;
   padding: 5px;
+  font-size: 0.75rem;
 }
