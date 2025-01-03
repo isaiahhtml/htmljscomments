@@ -1,3 +1,4 @@
+import hello from "./hello.js";
 let isSortedByNewest = false;
 let comments;
 
@@ -7,6 +8,8 @@ const commentServer = 'http://localhost:3333/comment'
 if (!API_URL) {
   throw new Error('Invalid API_URL or id');
 }
+
+hello();
 
 async function fetchComments() {
   try {
